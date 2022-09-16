@@ -45,14 +45,14 @@ ROOT_DEV = 0x306
 entry start
 start:
 	mov	ax,#BOOTSEG
-	mov	ds,ax
+	mov	ds,ax				! put 0x07c0 into ds register
 	mov	ax,#INITSEG
-	mov	es,ax
+	mov	es,ax				! put 0x9000 into es register
 	mov	cx,#256
 	sub	si,si
 	sub	di,di
-	rep
-	movw
+	rep						! repeat movw #256 times (cx)
+	movw					! copy from DS:SI to ES:DI
 	jmpi	go,INITSEG
 go:	mov	ax,cs
 	mov	ds,ax
@@ -84,7 +84,7 @@ ok_load_setup:
 	mov	ax,#0x0800		! AH=8 is get drive parameters
 	int	0x13
 	mov	ch,#0x00
-	seg cs
+	seg cs				! only effect next one command
 	mov	sectors,cx
 	mov	ax,#INITSEG
 	mov	es,ax
@@ -110,7 +110,7 @@ ok_load_setup:
 	call	kill_motor
 
 ! After that we check which root-device to use. If the device is
-! defined (!= 0), nothing is done and the given device is used.
+! defined (#= 0), nothing is done and the given device is used.
 ! Otherwise, either /dev/PS0 (2,28) or /dev/at0 (2,8), depending
 ! on the number of sectors that the BIOS reports currently.
 
