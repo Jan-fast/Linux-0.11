@@ -120,7 +120,7 @@ do_move:
 	mov	ds,ax		! source segment
 	sub	di,di
 	sub	si,si
-	mov 	cx,#0x8000
+	mov cx,#0x8000
 	rep
 	movsw
 	jmp	do_move
